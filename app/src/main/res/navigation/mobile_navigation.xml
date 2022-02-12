@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_profile">
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.myapplication.ui.profile.ProfileFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/nav_myPlayers"
+        android:name="com.example.myapplication.ui.myplayers.MyPlayersFragment"
+        android:label="@string/menu_myPlayers"
+        tools:layout="@layout/fragment_myplayers" />
+
+    <fragment
+        android:id="@+id/nav_scoreboard"
+        android:name="com.example.myapplication.ui.scoreboard.ScoreboardFragment"
+        android:label="Scoreboard"
+        tools:layout="@layout/fragment_scoreboard" />
+</navigation>
