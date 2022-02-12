@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/myplayersFragment">
+
+    <fragment
+        android:id="@+id/myplayersFragment"
+        android:name="com.example.myapplication.myplayers.MyPlayersFragment"
+        android:label="Players"
+        tools:layout="@layout/fragment_myplayers">
+        <action
+            android:id="@+id/action_myplayers_to_menu"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.myapplication.profile.ProfileFragment"
+        android:label="Players"
+        tools:layout="@layout/fragment_profile">
+    </fragment>
+</navigation>

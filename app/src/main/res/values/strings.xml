@@ -7,6 +7,10 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
+    <string name="welcome_to_app">Welcome to Dream Team</string>
+    <string name="login">login</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
     <string name="menu_profile">Profile</string>
     <string name="menu_myPlayers">MyPlayers</string>
     <string name="menu_scoreboard">Scoreboard</string>

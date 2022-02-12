@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.myplayers;
+package com.example.myapplication.profile;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,23 +12,23 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.myapplication.databinding.FragmentMyplayersBinding;
+import com.example.myapplication.databinding.FragmentProfileBinding;
 
-public class MyPlayersFragment extends Fragment {
+public class ProfileFragment extends Fragment {
 
-    private MyPlayersViewModel myPlayersViewModel;
-    private FragmentMyplayersBinding binding;
+    private ProfileViewModel profileViewModel;
+    private FragmentProfileBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        myPlayersViewModel =
-                new ViewModelProvider(this).get(MyPlayersViewModel.class);
+        profileViewModel =
+                new ViewModelProvider(this).get(ProfileViewModel.class);
 
-        binding = FragmentMyplayersBinding.inflate(inflater, container, false);
+        binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textMyPlayers;
-        myPlayersViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        final TextView textView = binding.textProfile;
+        profileViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
