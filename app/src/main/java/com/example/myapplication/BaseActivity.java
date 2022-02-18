@@ -17,26 +17,11 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
 
-        NavHost navHost = (NavHost)getSupportFragmentManager().findFragmentById(R.id.base_navhost);
+        NavHost navHost = (NavHost) getSupportFragmentManager().findFragmentById(R.id.base_navhost);
         navCtl = navHost.getNavController();
-
-        NavigationUI.setupActionBarWithNavController(this,navCtl);
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (!super.onOptionsItemSelected(item)){
-            switch (item.getItemId()){
-                case android.R.id.home:
-                    navCtl.navigateUp();
-                    return true;
-                default:
-                    NavigationUI.onNavDestinationSelected(item,navCtl);
-            }
-        }else{
-            return true;
-        }
-        return false;
+        String userId = getIntent().getStringExtra("userId");
+        Bundle bundle = new Bundle();
+        bundle.putString("userId", userId);
+        navCtl.setGraph(R.navigation.nav_graph, bundle);
     }
 }

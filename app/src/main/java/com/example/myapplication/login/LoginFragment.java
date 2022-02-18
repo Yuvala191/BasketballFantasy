@@ -6,12 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.R;
 import com.example.myapplication.BaseActivity;
-
 
 public class LoginFragment extends Fragment {
 
@@ -24,13 +24,17 @@ public class LoginFragment extends Fragment {
         Button loginBtn = view.findViewById(R.id.login_login_btn);
         loginBtn.setOnClickListener(v -> {
             //TODO - connect to model login function
-            toFeedActivity();
+            if (true) {
+                String userId = ((TextView) view.findViewById(R.id.login_username)).getText().toString();
+                toMyPlayersActivity(userId);
+            }
         });
         return view;
     }
 
-    private void toFeedActivity() {
+    private void toMyPlayersActivity(String userId) {
         Intent intent = new Intent(getContext(), BaseActivity.class);
+        intent.putExtra("userId", userId);
         startActivity(intent);
         getActivity().finish();
     }

@@ -11,7 +11,7 @@
         android:label="Players"
         tools:layout="@layout/fragment_myplayers">
         <action
-            android:id="@+id/action_myplayers_to_menu"
+            android:id="@+id/action_myplayers_to_profile"
             app:destination="@id/profileFragment" />
     </fragment>
     <fragment
@@ -19,5 +19,8 @@
         android:name="com.example.myapplication.profile.ProfileFragment"
         android:label="Players"
         tools:layout="@layout/fragment_profile">
+        <argument
+            android:name="userId"
+            app:argType="string" />
     </fragment>
 </navigation>

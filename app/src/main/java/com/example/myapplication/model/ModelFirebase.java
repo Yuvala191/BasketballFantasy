@@ -21,7 +21,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +33,19 @@ public class ModelFirebase {
                 .setPersistenceEnabled(false)
                 .build();
         db.setFirestoreSettings(settings);
+
+        User user = new User("Woody", "123456",15);
+        ArrayList<String> a = new ArrayList<String>();
+        a.add("Jordan");
+        a.add("Lebron");
+        a.add("Kobe");
+        a.add("AI");
+        a.add("Steph");
+        user.setPlayers(a);
+        Map<String, Object> json = user.toJson();
+        db.collection(User.COLLECTION_NAME)
+                .document(user.getUsername())
+                .set(json);
     }
 
     public void getUserById(String userId, Model.GetUserById listener) {

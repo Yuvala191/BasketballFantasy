@@ -4,10 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.FieldValue;
-
 import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Map;
 
 @Entity
@@ -15,72 +13,62 @@ public class User {
     final public static String COLLECTION_NAME = "users";
     @PrimaryKey
     @NonNull
-    String id = "";
-    String name = "";
-    int score = 0;
-    Long updateDate = new Long(0);
+    String username = "";
+    String password = "";
+    long score = 0;
     String avatarUrl;
+    ArrayList<String> players = new ArrayList<String>();;
 
-    public void setUpdateDate(Long updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    public User(){}
-    public User(String name, String id, int score) {
-        this.name = name;
-        this.id = id;
+    public User(String username, String password, long score) {
+        this.username = username;
+        this.password = password;
         this.score = score;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public void setScore(int score) {
+    public void setScore(long score) {
         this.score = score;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public String getId() {
-        return id;
+    public String getPassword() {
+        return password;
     }
 
-    public int getScore() {
+    public long getScore() {
         return score;
     }
 
     public Map<String, Object> toJson() {
         Map<String, Object> json = new HashMap<String, Object>();
-        json.put("id",id);
-        json.put("name",name);
-        json.put("flag",score);
+        json.put("password",password);
+        json.put("username",username);
+        json.put("score",score);
         json.put("avatarUrl",avatarUrl);
+        json.put("players",players);
         return json;
     }
 
     public static User create(Map<String, Object> json) {
-        String id = (String) json.get("id");
-        String name = (String) json.get("name");
-        int score = (int) json.get("score");
+        String password = (String) json.get("password");
+        String username = (String) json.get("username");
+        long score = (long) json.get("score");
+        ArrayList<String> players = (ArrayList<String>) json.get("players");
         String avatarUrl = (String)json.get("avatarUrl");
-        Timestamp ts = (Timestamp)json.get("updateDate");
-        Long updateDate = ts.getSeconds();
-
-        User user = new User(name,id,score);
-        user.setUpdateDate(updateDate);
+        User user = new User(username,password,score);
+        user.setPlayers(players);
         user.setAvatarUrl(avatarUrl);
         return user;
-    }
-
-    public Long getUpdateDate() {
-        return updateDate;
     }
 
     public void setAvatarUrl(String url) {
@@ -89,5 +77,13 @@ public class User {
 
     public String getAvatarUrl() {
         return avatarUrl;
+    }
+
+    public void setPlayers(ArrayList<String> newPlayers) {
+        players = newPlayers;
+    }
+
+    public ArrayList<String> getPlayers() {
+        return players;
     }
 }

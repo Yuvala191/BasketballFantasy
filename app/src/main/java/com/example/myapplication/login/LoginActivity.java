@@ -18,26 +18,5 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        NavHost navHost = (NavHost)getSupportFragmentManager().findFragmentById(R.id.login_navhost);
-        navCtl = navHost.getNavController();
-
-        NavigationUI.setupActionBarWithNavController(this,navCtl);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (!super.onOptionsItemSelected(item)){
-            switch (item.getItemId()){
-                case android.R.id.home:
-                    navCtl.navigateUp();
-                    return true;
-                default:
-                    NavigationUI.onNavDestinationSelected(item,navCtl);
-            }
-        }else{
-            return true;
-        }
-        return false;
     }
 }

@@ -1,45 +1,55 @@
 package com.example.myapplication.profile;
 
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
+import com.example.myapplication.R;
+import com.example.myapplication.model.Model;
+import com.example.myapplication.model.User;
+import com.squareup.picasso.Picasso;
 
-import com.example.myapplication.databinding.FragmentProfileBinding;
 
 public class ProfileFragment extends Fragment {
-
-    private ProfileViewModel profileViewModel;
-    private FragmentProfileBinding binding;
-
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        profileViewModel =
-                new ViewModelProvider(this).get(ProfileViewModel.class);
-
-        binding = FragmentProfileBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-
-        final TextView textView = binding.textProfile;
-        profileViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;
-    }
+    TextView nameTv;
+    TextView passwordTv;
+    ImageView avatarImv;
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        String userId = ProfileFragmentArgs.fromBundle(getArguments()).getUserId();
+
+        Model.instance.getUserById(userId, new Model.GetUserById() {
+            @Override
+            public void onComplete(User user) {
+                nameTv.setText(user.getUsername());
+                passwordTv.setText(user.getPassword());
+                if (user.getAvatarUrl() != null) {
+                    Picasso.get().load(user.getAvatarUrl()).into(avatarImv);
+                }
+            }
+        });
+
+        nameTv = view.findViewById(R.id.profile_name_tv);
+        passwordTv = view.findViewById(R.id.profile_password_tv);
+        avatarImv = view.findViewById(R.id.profile_avatar_img);
+
+        Button backBtn = view.findViewById(R.id.profile_back_btn);
+        backBtn.setOnClickListener((v)->{
+            Navigation.findNavController(v).navigateUp();
+        });
+        return view;
     }
 }

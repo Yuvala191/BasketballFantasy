@@ -9,7 +9,7 @@
 
     <string name="welcome_to_app">Welcome to Dream Team</string>
     <string name="login">login</string>
-    <string name="email">email</string>
+    <string name="username">username</string>
     <string name="password">password</string>
     <string name="menu_profile">Profile</string>
     <string name="menu_myPlayers">MyPlayers</string>

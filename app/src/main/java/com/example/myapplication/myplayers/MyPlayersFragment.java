@@ -1,45 +1,59 @@
 package com.example.myapplication.myplayers;
 
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
+import com.example.myapplication.R;
+import com.example.myapplication.model.Model;
+import com.example.myapplication.model.User;
 
-import com.example.myapplication.databinding.FragmentMyplayersBinding;
+import java.util.List;
 
 public class MyPlayersFragment extends Fragment {
-
-    private MyPlayersViewModel myPlayersViewModel;
-    private FragmentMyplayersBinding binding;
-
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        myPlayersViewModel =
-                new ViewModelProvider(this).get(MyPlayersViewModel.class);
-
-        binding = FragmentMyplayersBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-
-        final TextView textView = binding.textMyPlayers;
-        myPlayersViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;
-    }
+    TextView player_one;
+    TextView player_two;
+    TextView player_three;
+    TextView player_four;
+    TextView player_five;
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_myplayers, container, false);
+
+        String userId = getArguments().getString("userId");
+
+        Model.instance.getUserById(userId, new Model.GetUserById() {
+            @Override
+            public void onComplete(User user) {
+                List<String> userPlayers = user.getPlayers();
+                player_one.setText(userPlayers.get(0));
+                player_two.setText(userPlayers.get(1));
+                player_three.setText(userPlayers.get(2));
+                player_four.setText(userPlayers.get(3));
+                player_five.setText(userPlayers.get(4));
+            }
+        });
+
+        player_one = view.findViewById(R.id.player_one_name);
+        player_two = view.findViewById(R.id.player_two_name);
+        player_three = view.findViewById(R.id.player_three_name);
+        player_four = view.findViewById(R.id.player_four_name);
+        player_five = view.findViewById(R.id.player_five_name);
+
+        Button profileBtn = view.findViewById(R.id.myplayers_to_profile_btn);
+        profileBtn.setOnClickListener((v)->{
+            Navigation.findNavController(v).navigate(R.id.action_myplayers_to_profile);
+        });
+        return view;
     }
 }
