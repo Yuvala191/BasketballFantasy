@@ -52,7 +52,7 @@ public class MyPlayersFragment extends Fragment {
 
         Button profileBtn = view.findViewById(R.id.myplayers_to_profile_btn);
         profileBtn.setOnClickListener((v)->{
-            Navigation.findNavController(v).navigate(R.id.action_myplayers_to_profile);
+            Navigation.findNavController(v).navigate(MyPlayersFragmentDirections.actionMyPlayersFragmentToProfileFragment(userId));
         });
         return view;
     }

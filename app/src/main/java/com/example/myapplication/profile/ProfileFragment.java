@@ -35,7 +35,6 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onComplete(User user) {
                 nameTv.setText(user.getUsername());
-                passwordTv.setText(user.getPassword());
                 if (user.getAvatarUrl() != null) {
                     Picasso.get().load(user.getAvatarUrl()).into(avatarImv);
                 }
@@ -43,7 +42,6 @@ public class ProfileFragment extends Fragment {
         });
 
         nameTv = view.findViewById(R.id.profile_name_tv);
-        passwordTv = view.findViewById(R.id.profile_password_tv);
         avatarImv = view.findViewById(R.id.profile_avatar_img);
 
         Button backBtn = view.findViewById(R.id.profile_back_btn);
