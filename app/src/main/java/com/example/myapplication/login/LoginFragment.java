@@ -9,9 +9,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.myapplication.R;
 import com.example.myapplication.BaseActivity;
+import com.example.myapplication.myplayers.MyPlayersFragmentDirections;
 
 public class LoginFragment extends Fragment {
 
@@ -28,6 +30,11 @@ public class LoginFragment extends Fragment {
                 String userId = ((TextView) view.findViewById(R.id.login_username)).getText().toString();
                 toMyPlayersActivity(userId);
             }
+        });
+
+        Button signupBtn = view.findViewById(R.id.login_signup_btn);
+        signupBtn.setOnClickListener((v)->{
+            Navigation.findNavController(v).navigate(LoginFragmentDirections.actionLoginFragmentToSignupFragment());
         });
         return view;
     }

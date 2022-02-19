@@ -70,6 +70,15 @@ public class ModelFirebase {
                 });
     }
 
+    public void createUser(User user, Model.CreateUserListener listener) {
+        Map<String, Object> json = user.toJson();
+        db.collection(User.COLLECTION_NAME)
+                .document(user.getUsername())
+                .set(json)
+                .addOnSuccessListener(unused -> listener.onComplete())
+                .addOnFailureListener(e -> listener.onComplete());
+    }
+
     public void updateUser(String username, User user, Model.UpdateUserListener listener) {
         Map<String, Object> json = user.toJson();
         db.collection(User.COLLECTION_NAME)

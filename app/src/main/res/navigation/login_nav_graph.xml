@@ -10,4 +10,13 @@
         android:name="com.example.myapplication.login.LoginFragment"
         android:label="Login"
         tools:layout="@layout/fragment_login" />
+        <action
+        android:id="@+id/action_loginFragment_to_signupFragment"
+        app:destination="@id/signupFragment" />
+
+    <fragment
+        android:id="@+id/signupFragment"
+        android:name="com.example.myapplication.login.SignupFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_signup" />
 </navigation>

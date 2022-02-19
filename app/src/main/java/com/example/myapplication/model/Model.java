@@ -96,6 +96,16 @@ public class Model {
         return null;
     }
 
+    public interface CreateUserListener {
+        void onComplete();
+    }
+
+    public void createUser(User user, CreateUserListener listener) {
+        modelFirebase.createUser(user, () -> {
+            listener.onComplete();
+        });
+    }
+
     public interface UpdateUserListener {
         void onComplete();
     }

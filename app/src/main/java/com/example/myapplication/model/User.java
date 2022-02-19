@@ -64,7 +64,7 @@ public class User {
         json.put("score",score);
         json.put("avatarUrl",avatarUrl);
         json.put("updateDate", FieldValue.serverTimestamp());
-        json.put("players",players);
+        json.put("players",players.getPlayers());
         return json;
     }
 
