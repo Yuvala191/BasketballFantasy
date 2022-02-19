@@ -13,14 +13,23 @@
         <action
             android:id="@+id/action_myPlayersFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_myPlayersFragment_to_leaderboardFragment"
+            app:destination="@id/leaderboardFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.myapplication.profile.ProfileFragment"
-        android:label="Players"
+        android:label="Profile"
         tools:layout="@layout/fragment_profile">
         <argument
             android:name="userId"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/leaderboardFragment"
+        android:name="com.example.myapplication.leaderboard.LeaderboardFragment"
+        android:label="Leaderboard"
+        tools:layout="@layout/fragment_leaderboard">
     </fragment>
 </navigation>

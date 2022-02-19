@@ -60,6 +60,10 @@ public class MyPlayersFragment extends Fragment {
         profileBtn.setOnClickListener((v)->{
             Navigation.findNavController(v).navigate(MyPlayersFragmentDirections.actionMyPlayersFragmentToProfileFragment(userId));
         });
+        Button leaderboardBtn = view.findViewById(R.id.myplayers_to_leaderboard_btn);
+        leaderboardBtn.setOnClickListener((v)->{
+            Navigation.findNavController(v).navigate(MyPlayersFragmentDirections.actionMyPlayersFragmentToLeaderboardFragment());
+        });
         return view;
     }
 }

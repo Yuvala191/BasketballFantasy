@@ -11,7 +11,7 @@
             android:id="@+id/nav_myPlayers"
             android:title="@string/menu_myPlayers" />
         <item
-            android:id="@+id/nav_scoreboard"
-            android:title="@string/menu_scoreboard" />
+            android:id="@+id/nav_leaderboard"
+            android:title="@string/menu_leaderboard" />
     </group>
 </menu>

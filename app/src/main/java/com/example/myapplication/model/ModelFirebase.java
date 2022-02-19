@@ -1,9 +1,13 @@
 package com.example.myapplication.model;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -22,6 +26,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +38,28 @@ public class ModelFirebase {
                 .setPersistenceEnabled(false)
                 .build();
         db.setFirestoreSettings(settings);
+    }
+
+    public interface GetAllUsersListener{
+        void onComplete(List<User> list);
+    }
+
+    public void getAllUsers(Long lastUpdateDate, GetAllUsersListener listener) {
+        db.collection(User.COLLECTION_NAME)
+                .whereGreaterThanOrEqualTo("updateDate",new Timestamp(lastUpdateDate,0))
+                .get()
+                .addOnCompleteListener(task -> {
+                    List<User> list = new LinkedList<User>();
+                    if (task.isSuccessful()){
+                        for (QueryDocumentSnapshot doc : task.getResult()){
+                            User user = User.create(doc.getData());
+                            if (user != null){
+                                list.add(user);
+                            }
+                        }
+                    }
+                    listener.onComplete(list);
+                });
     }
 
     public void updateUser(String username, User user, Model.UpdateUserListener listener) {
@@ -52,7 +79,7 @@ public class ModelFirebase {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         User user = null;
-                        if (task.isSuccessful() & task.getResult()!= null){
+                        if (task.isSuccessful() & task.getResult()!= null) {
                             user = User.create(task.getResult().getData());
                         }
                         listener.onComplete(user);
