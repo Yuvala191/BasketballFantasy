@@ -78,8 +78,8 @@ public class Model {
                                 .putLong("UsersLastUpdateDate", lud)
                                 .commit();
 
-                        List<User> stList = AppLocalDb.db.userDao().getAll();
-                        usersList.postValue(stList);
+                        List<User> userList = AppLocalDb.db.userDao().getAll();
+                        usersList.postValue(userList);
                         userListLoadingState.postValue(UserListLoadingState.loaded);
                     }
                 });

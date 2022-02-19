@@ -26,6 +26,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +52,12 @@ public class ModelFirebase {
                 .get()
                 .addOnCompleteListener(task -> {
                     List<User> list = new LinkedList<User>();
+                    Collections.sort(list, new Comparator<User>() {
+                        @Override
+                        public int compare(User u1, User u2) {
+                            return (int) (u1.getScore() - u2.getScore());
+                        }
+                    });
                     if (task.isSuccessful()){
                         for (QueryDocumentSnapshot doc : task.getResult()){
                             User user = User.create(doc.getData());

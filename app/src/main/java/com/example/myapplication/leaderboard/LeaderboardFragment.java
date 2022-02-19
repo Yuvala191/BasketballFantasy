@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -49,8 +50,6 @@ public class LeaderboardFragment extends Fragment {
         adapter = new MyAdapter();
         list.setAdapter(adapter);
 
-
-        setHasOptionsMenu(true);
         viewModel.getData().observe(getViewLifecycleOwner(), list1 -> refresh());
         swipeRefresh.setRefreshing(Model.instance.getUserListLoadingState().getValue() == Model.UserListLoadingState.loading);
         Model.instance.getUserListLoadingState().observe(getViewLifecycleOwner(), userListLoadingState -> {
@@ -60,6 +59,11 @@ public class LeaderboardFragment extends Fragment {
                 swipeRefresh.setRefreshing(false);
             }
 
+        });
+
+        Button backBtn = view.findViewById(R.id.leaderboard_back_btn);
+        backBtn.setOnClickListener((v)->{
+            Navigation.findNavController(v).navigateUp();
         });
         return view;
     }
