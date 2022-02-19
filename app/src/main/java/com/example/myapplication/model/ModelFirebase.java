@@ -35,6 +35,15 @@ public class ModelFirebase {
         db.setFirestoreSettings(settings);
     }
 
+    public void updateUser(String username, User user, Model.UpdateUserListener listener) {
+        Map<String, Object> json = user.toJson();
+        db.collection(User.COLLECTION_NAME)
+                .document(username)
+                .set(json)
+                .addOnSuccessListener(unused -> listener.onComplete())
+                .addOnFailureListener(e -> listener.onComplete());
+    }
+
     public void getUserById(String userId, Model.GetUserById listener) {
         db.collection(User.COLLECTION_NAME)
                 .document(userId)

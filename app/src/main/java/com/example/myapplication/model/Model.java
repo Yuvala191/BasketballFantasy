@@ -33,6 +33,15 @@ public class Model {
         return null;
     }
 
+    public interface UpdateUserListener {
+        void onComplete();
+    }
+
+    public void updateUser(String username, User user, UpdateUserListener listener) {
+        modelFirebase.updateUser(username, user, () -> {
+            listener.onComplete();
+        });
+    }
 
     public interface SaveImageListener {
         void onComplete(String url);
