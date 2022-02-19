@@ -96,6 +96,15 @@ public class Model {
         return null;
     }
 
+    public interface GetUserByUsernameAndPassword {
+        void onComplete(User user);
+    }
+
+    public User getUserByUsernameAndPassword(String userId, String password, GetUserByUsernameAndPassword listener) {
+        modelFirebase.getUserByUsernameAndPassword(userId, password, listener);
+        return null;
+    }
+
     public interface CreateUserListener {
         void onComplete();
     }

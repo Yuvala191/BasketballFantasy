@@ -13,7 +13,11 @@ import androidx.navigation.Navigation;
 
 import com.example.myapplication.R;
 import com.example.myapplication.BaseActivity;
+import com.example.myapplication.model.Model;
+import com.example.myapplication.model.User;
 import com.example.myapplication.myplayers.MyPlayersFragmentDirections;
+
+import java.util.List;
 
 public class LoginFragment extends Fragment {
 
@@ -25,11 +29,16 @@ public class LoginFragment extends Fragment {
 
         Button loginBtn = view.findViewById(R.id.login_login_btn);
         loginBtn.setOnClickListener(v -> {
-            //TODO - connect to model login function
-            if (true) {
-                String userId = ((TextView) view.findViewById(R.id.login_username)).getText().toString();
-                toMyPlayersActivity(userId);
-            }
+            String userId = ((TextView) view.findViewById(R.id.login_username)).getText().toString();
+            String password = ((TextView) view.findViewById(R.id.login_password_et)).getText().toString();
+            Model.instance.getUserByUsernameAndPassword(userId, password, new Model.GetUserByUsernameAndPassword() {
+                @Override
+                public void onComplete(User user) {
+                    if (user != null) {
+                        toMyPlayersActivity(userId);
+                    }
+                }
+            });
         });
 
         Button signupBtn = view.findViewById(R.id.login_signup_btn);

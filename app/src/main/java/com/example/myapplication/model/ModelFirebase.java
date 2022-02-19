@@ -20,6 +20,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -96,7 +97,7 @@ public class ModelFirebase {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         User user = null;
-                        if (task.isSuccessful() & task.getResult()!= null) {
+                        if (task.isSuccessful() & task.getResult().getData() != null) {
                             user = User.create(task.getResult().getData());
                         }
                         listener.onComplete(user);
@@ -105,6 +106,28 @@ public class ModelFirebase {
 
     }
 
+    public void getUserByUsernameAndPassword(String userId, String password, Model.GetUserByUsernameAndPassword listener) {
+        db.collection(User.COLLECTION_NAME)
+                .whereEqualTo("username", userId)
+                .whereEqualTo("password", password)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                User user = null;
+                                if (document.getData() != null) {
+                                    user = User.create(document.getData());
+                                    listener.onComplete(user);
+                                }
+                            }
+                        }
+
+                    }
+                });
+
+    }
 
     FirebaseStorage storage = FirebaseStorage.getInstance();
     public void saveImage(Bitmap imageBitmap, String imageName, Model.SaveImageListener listener) {
