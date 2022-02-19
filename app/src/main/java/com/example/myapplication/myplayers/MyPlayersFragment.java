@@ -18,6 +18,8 @@ import com.example.myapplication.model.User;
 import java.util.List;
 
 public class MyPlayersFragment extends Fragment {
+    TextView team_name;
+    TextView score;
     TextView player_one;
     TextView player_two;
     TextView player_three;
@@ -36,6 +38,8 @@ public class MyPlayersFragment extends Fragment {
             @Override
             public void onComplete(User user) {
                 List<String> userPlayers = user.getPlayers();
+                team_name.setText(user.getUsername() + "'s Team");
+                score.setText(String.valueOf(user.getScore()));
                 player_one.setText(userPlayers.get(0));
                 player_two.setText(userPlayers.get(1));
                 player_three.setText(userPlayers.get(2));
@@ -44,6 +48,8 @@ public class MyPlayersFragment extends Fragment {
             }
         });
 
+        team_name = view.findViewById(R.id.team_name_label);
+        score = view.findViewById(R.id.user_score);
         player_one = view.findViewById(R.id.player_one_name);
         player_two = view.findViewById(R.id.player_two_name);
         player_three = view.findViewById(R.id.player_three_name);
