@@ -2,10 +2,14 @@ package com.example.myapplication.myplayers;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -33,6 +37,7 @@ public class MyPlayersFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_myplayers, container, false);
 
         String userId = getArguments().getString("userId");
+        setHasOptionsMenu(true);
 
         Model.instance.getUserById(userId, new Model.GetUserById() {
             @Override
@@ -65,5 +70,20 @@ public class MyPlayersFragment extends Fragment {
             Navigation.findNavController(v).navigate(MyPlayersFragmentDirections.actionMyPlayersFragmentToLeaderboardFragment());
         });
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.myplayers_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.newPostFragment) {
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 }
