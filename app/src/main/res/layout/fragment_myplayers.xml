@@ -122,6 +122,23 @@
         app:layout_constraintTop_toBottomOf="@+id/player_four_name" />
 
     <Button
+        android:id="@+id/myplayers_to_myposts_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My posts"
+        app:layout_constraintBottom_toTopOf="@+id/myplayers_to_profile_btn"
+        app:layout_constraintStart_toStartOf="@+id/myplayers_to_profile_btn" />
+
+    <Button
+        android:id="@+id/myplayers_to_allposts_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="All posts"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/myplayers_to_leaderboard_btn"
+        app:layout_constraintStart_toEndOf="@+id/myplayers_to_myposts_btn" />
+
+    <Button
         android:id="@+id/myplayers_to_profile_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

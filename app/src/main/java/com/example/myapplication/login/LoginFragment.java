@@ -31,15 +31,12 @@ public class LoginFragment extends Fragment {
         loginBtn.setOnClickListener(v -> {
             String userId = ((TextView) view.findViewById(R.id.login_username)).getText().toString();
             String password = ((TextView) view.findViewById(R.id.login_password_et)).getText().toString();
-            Model.instance.getUserByUsernameAndPassword(userId, password, new Model.GetUserByUsernameAndPassword() {
-                @Override
-                public void onComplete(User user) {
+            Model.instance.signIn(userId, password, (user, error) -> {
                     if (user != null) {
                         toMyPlayersActivity(userId);
                     }
-                }
+                });
             });
-        });
 
         Button signupBtn = view.findViewById(R.id.login_signup_btn);
         signupBtn.setOnClickListener((v)->{

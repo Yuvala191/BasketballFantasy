@@ -29,29 +29,33 @@ public class MyPlayersFragment extends Fragment {
     TextView player_three;
     TextView player_four;
     TextView player_five;
+    String userId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_myplayers, container, false);
-
-        String userId = getArguments().getString("userId");
         setHasOptionsMenu(true);
 
-        Model.instance.getUserById(userId, new Model.GetUserById() {
-            @Override
-            public void onComplete(User user) {
-                List<String> userPlayers = user.getPlayers();
-                team_name.setText(user.getUsername() + "'s Team");
-                score.setText(String.valueOf(user.getScore()));
-                player_one.setText(userPlayers.get(0));
-                player_two.setText(userPlayers.get(1));
-                player_three.setText(userPlayers.get(2));
-                player_four.setText(userPlayers.get(3));
-                player_five.setText(userPlayers.get(4));
-            }
+        Model.instance.getLoggedInUser((user) -> {
+            userId = user.getUsername();
+            Model.instance.getUserById(user.getUsername(), new Model.GetUserById() {
+                @Override
+                public void onComplete(User user) {
+                    List<String> userPlayers = user.getPlayers();
+                    team_name.setText(user.getUsername() + "'s Team");
+                    score.setText(String.valueOf(user.getScore()));
+                    player_one.setText(userPlayers.get(0));
+                    player_two.setText(userPlayers.get(1));
+                    player_three.setText(userPlayers.get(2));
+                    player_four.setText(userPlayers.get(3));
+                    player_five.setText(userPlayers.get(4));
+                }
+            });
         });
+
+
 
         team_name = view.findViewById(R.id.team_name_label);
         score = view.findViewById(R.id.user_score);
@@ -68,6 +72,14 @@ public class MyPlayersFragment extends Fragment {
         Button leaderboardBtn = view.findViewById(R.id.myplayers_to_leaderboard_btn);
         leaderboardBtn.setOnClickListener((v)->{
             Navigation.findNavController(v).navigate(MyPlayersFragmentDirections.actionMyPlayersFragmentToLeaderboardFragment());
+        });
+        Button mypostsBtn = view.findViewById(R.id.myplayers_to_myposts_btn);
+        mypostsBtn.setOnClickListener((v)->{
+            Navigation.findNavController(v).navigate(MyPlayersFragmentDirections.actionMyPlayersFragmentToMypostsFragment(userId));
+        });
+        Button allPostsBtn = view.findViewById(R.id.myplayers_to_allposts_btn);
+        allPostsBtn.setOnClickListener((v)->{
+            Navigation.findNavController(v).navigate(MyPlayersFragmentDirections.actionMyPlayersFragmentToAllpostsFragment());
         });
         return view;
     }

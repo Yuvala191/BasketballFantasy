@@ -35,6 +35,7 @@ import java.util.Map;
 
 public class ModelFirebase {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    User loggedInUser;
 
     public ModelFirebase(){
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
@@ -71,10 +72,32 @@ public class ModelFirebase {
                 });
     }
 
-    public void createUser(User user, Model.CreateUserListener listener) {
-        Map<String, Object> json = user.toJson();
-        db.collection(User.COLLECTION_NAME)
-                .document(user.getUsername())
+    public interface GetAllPostsListener{
+        void onComplete(List<Post> list);
+    }
+
+    public void getAllPosts(Long lastUpdateDate, GetAllPostsListener listener) {
+        db.collection(Post.COLLECTION_NAME)
+                .whereGreaterThanOrEqualTo("updateDate",new Timestamp(lastUpdateDate,0))
+                .get()
+                .addOnCompleteListener(task -> {
+                    List<Post> list = new LinkedList<Post>();
+                    if (task.isSuccessful()){
+                        for (QueryDocumentSnapshot doc : task.getResult()){
+                            Post post = Post.create(doc.getData());
+                            if (post != null){
+                                list.add(post);
+                            }
+                        }
+                    }
+                    listener.onComplete(list);
+                });
+    }
+
+    public void createPost(Post post, Model.CreatePostListener listener) {
+        Map<String, Object> json = post.toJson();
+        db.collection(Post.COLLECTION_NAME)
+                .document(post.getId())
                 .set(json)
                 .addOnSuccessListener(unused -> listener.onComplete())
                 .addOnFailureListener(e -> listener.onComplete());
@@ -87,6 +110,7 @@ public class ModelFirebase {
                 .set(json)
                 .addOnSuccessListener(unused -> listener.onComplete())
                 .addOnFailureListener(e -> listener.onComplete());
+        loggedInUser = user;
     }
 
     public void getUserById(String userId, Model.GetUserById listener) {
@@ -104,6 +128,32 @@ public class ModelFirebase {
                     }
                 });
 
+    }
+
+    public void getPostById(String postId, Model.GetPostById listener) {
+        db.collection(Post.COLLECTION_NAME)
+                .document(postId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        Post post = null;
+                        if (task.isSuccessful() & task.getResult().getData() != null) {
+                            post = Post.create(task.getResult().getData());
+                        }
+                        listener.onComplete(post);
+                    }
+                });
+
+    }
+
+    public void updatePostById(String postId, Post note, Model.UpdatePostListener listener) {
+        Map<String, Object> json = note.toJson();
+        db.collection(Post.COLLECTION_NAME)
+                .document(postId)
+                .set(json)
+                .addOnSuccessListener(unused -> listener.onComplete())
+                .addOnFailureListener(e -> listener.onComplete());
     }
 
     public void getUserByUsernameAndPassword(String userId, String password, Model.GetUserByUsernameAndPassword listener) {
@@ -161,4 +211,56 @@ public class ModelFirebase {
         return (currentUser != null);
     }
 
+    public void signIn(@NonNull String userId, @NonNull String password, Model.SignInListener listener) {
+        mAuth.signInWithEmailAndPassword(userId, password).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                // Sign in success, update UI with the signed-in user's information
+                Log.d("TAG", "signInWithEmail:success");
+                FirebaseUser user = mAuth.getCurrentUser();
+                getUserById(userId, (currentUser) -> {
+                    loggedInUser = currentUser;
+                });
+                listener.onComplete(user, null);
+            } else {
+                // If sign in fails, display a message to the user.
+                Log.w("TAG", "signInWithEmail:failure", task.getException());
+                listener.onComplete(null, task.getException());
+            }
+        });
+    }
+
+    public void getLoggedInUser(Model.GetLoggedUserListener listener) {
+        if (this.loggedInUser != null)
+            listener.onComplete( this.loggedInUser);
+
+        FirebaseUser user = mAuth.getCurrentUser();
+        getUserById(user.getEmail(), (currentUser) -> {
+            this.loggedInUser = currentUser;
+            listener.onComplete( this.loggedInUser);
+        });
+    };
+
+    public void createUser(User user, Model.RegisterListener listener) {
+        mAuth.createUserWithEmailAndPassword(user.getUsername(), user.getPassword()).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                // Sign in success, update UI with the signed-in user's information
+                Log.d("TAG", "createUserWithEmail:success");
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                Map<String, Object> json = user.toJson();
+                db.collection(User.COLLECTION_NAME)
+                        .document(user.getUsername())
+                        .set(json)
+                        .addOnSuccessListener(unused -> listener.onComplete(currentUser, null))
+                        .addOnFailureListener(e -> listener.onComplete(null, task.getException()));
+            } else {
+                // If sign in fails, display a message to the user.
+                Log.w("TAG", "createUserWithEmail:failure", task.getException());
+                listener.onComplete(null, task.getException());
+            }
+        });
+    }
+
+    public void logout() {
+        mAuth.signOut();
+    }
 }

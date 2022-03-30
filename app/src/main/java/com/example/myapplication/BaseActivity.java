@@ -10,6 +10,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavHost;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.myapplication.model.Model;
 import com.example.myapplication.myplayers.MyPlayersFragmentDirections;
 
 public class BaseActivity extends AppCompatActivity {
@@ -19,13 +20,13 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
-
-        NavHost navHost = (NavHost) getSupportFragmentManager().findFragmentById(R.id.base_navhost);
-        navCtl = navHost.getNavController();
-        userId = getIntent().getStringExtra("userId");
-        Bundle bundle = new Bundle();
-        bundle.putString("userId", userId);
-        navCtl.setGraph(R.navigation.nav_graph, bundle);
+        Model.instance.getLoggedInUser((user) -> {
+            userId = user.getUsername();
+            NavHost navHost = (NavHost) getSupportFragmentManager().findFragmentById(R.id.base_navhost);
+            navCtl = navHost.getNavController();
+            Bundle bundle = new Bundle();
+            navCtl.setGraph(R.navigation.nav_graph, bundle);
+        });
     }
 
     @Override

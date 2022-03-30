@@ -125,13 +125,13 @@ public class SignupFragment extends Fragment {
         user.setPlayers(players);
         Log.d("TAG","new user:" + username);
         if (imageBitmap == null){
-            Model.instance.createUser(user,()->{
+            Model.instance.createUser(user, (a, error)->{
                 Navigation.findNavController(usernameEt).navigateUp();
             });
         }else{
             Model.instance.saveImage(imageBitmap, username + ".jpg", url -> {
                 user.setAvatarUrl(url);
-                Model.instance.createUser(user,()->{
+                Model.instance.createUser(user, (a, error)->{
                     Navigation.findNavController(usernameEt).navigateUp();
                 });
             });

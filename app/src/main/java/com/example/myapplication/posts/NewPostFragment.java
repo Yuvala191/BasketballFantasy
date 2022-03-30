@@ -22,6 +22,8 @@ import com.example.myapplication.model.Model;
 import com.example.myapplication.model.Post;
 import com.example.myapplication.model.User;
 
+import java.util.UUID;
+
 public class NewPostFragment extends Fragment {
     private static final int REQUEST_CAMERA = 1;
     User loggedUser;
@@ -98,20 +100,19 @@ public class NewPostFragment extends Fragment {
 
         String title = titleEt.getText().toString();
         String content = contentEt.getText().toString();
-        Post post = new Post(title, content);
+        String id = UUID.randomUUID().toString();
+        Post post = new Post(id, loggedUser.getUsername(), title, content);
 
         if (title.isEmpty() || content.isEmpty()) return;
 
         if (imageBitmap == null){
-            loggedUser.addPost(post);
-            Model.instance.updateUser(userId, loggedUser, ()->{
+            Model.instance.createPost(post, ()-> {
                 Navigation.findNavController(titleEt).navigateUp();
             });
         }else{
             Model.instance.saveImage(imageBitmap, title + ".jpg", url -> {
                 post.setImageUrl(url);
-                loggedUser.addPost(post);
-                Model.instance.updateUser(userId, loggedUser ,()->{
+                Model.instance.createPost(post, ()-> {
                     Navigation.findNavController(titleEt).navigateUp();
                 });
             });

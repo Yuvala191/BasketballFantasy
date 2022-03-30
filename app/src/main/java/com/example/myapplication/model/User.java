@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @Entity
-@TypeConverters({PostsConverter.class, PlayersConverter.class })
+@TypeConverters({PlayersConverter.class })
 public class User {
     final public static String COLLECTION_NAME = "users";
     @PrimaryKey
@@ -25,7 +25,6 @@ public class User {
     String avatarUrl;
     Long updateDate = new Long(0);
     Players players = new Players();
-    Posts posts = new Posts();
 
     public User(String username, String password, long score) {
         this.username = username;
@@ -65,7 +64,6 @@ public class User {
         json.put("avatarUrl",avatarUrl);
         json.put("updateDate", FieldValue.serverTimestamp());
         json.put("players",players.getPlayers());
-        json.put("posts",posts.getPosts());
         return json;
     }
 
@@ -74,12 +72,11 @@ public class User {
         String username = (String) json.get("username");
         long score = (long) json.get("score");
         List<String> players = (ArrayList<String>) json.get("players");
-        List<Post> posts = (ArrayList<Post>) json.get("posts");
+
         String avatarUrl = (String)json.get("avatarUrl");
         Timestamp ts = (Timestamp)json.get("updateDate");
         Long updateDate = ts.getSeconds();
         User user = new User(username,password,score);
-        user.setPosts(posts);
         user.setPlayers(players);
         user.setAvatarUrl(avatarUrl);
         user.setUpdateDate(updateDate);
@@ -109,13 +106,6 @@ public class User {
     public List<String> getPlayers() {
         return players.getPlayers();
     }
-
-    public void addPost(Post post) { posts.addPost(post); }
-
-    public void setPosts(List<Post> newPosts) {
-        posts.setPosts(newPosts);
-    }
-
 }
 
 class Players {
@@ -128,22 +118,4 @@ class Players {
     public void setPlayers(List<String> players) {
         this.players = players;
     }
-}
-
-class Posts {
-    private List<Post> posts;
-
-    public Posts() {
-        this.posts = new ArrayList<Post>();
-    }
-
-    public List<Post> getPosts() {
-        return posts;
-    }
-
-    public void setPosts(List<Post> posts) {
-        this.posts = posts;
-    }
-
-    public void addPost(Post post) { this.posts.add(post);}
 }
