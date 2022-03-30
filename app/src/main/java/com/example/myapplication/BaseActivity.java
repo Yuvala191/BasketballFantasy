@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,6 +11,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavHost;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.myapplication.login.LoginActivity;
 import com.example.myapplication.model.Model;
 import com.example.myapplication.myplayers.MyPlayersFragmentDirections;
 
@@ -30,6 +32,13 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.base_menu,menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (!super.onOptionsItemSelected(item)){
             switch (item.getItemId()){
@@ -39,6 +48,14 @@ public class BaseActivity extends AppCompatActivity {
 
                 case R.id.newPostFragment:
                     navCtl.navigate(MyPlayersFragmentDirections.actionMyPlayersFragmentToNewPostFragment(userId));
+                    break;
+                case R.id.logoutFragment:
+                    Model.instance.logout();
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivity(intent);
+                    this.finish();
+                    break;
+
                 default:
                     NavigationUI.onNavDestinationSelected(item,navCtl);
             }

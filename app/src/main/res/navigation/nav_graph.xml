@@ -77,4 +77,10 @@
     <action
         android:id="@+id/action_myPlayersFragment_to_NewPostFragment"
         app:destination="@id/newPostFragment" />
+    <activity
+        android:id="@+id/logoutFragment"
+        android:name="com.example.myapplication.login.LoginActivity"
+        android:label="Login"
+        tools:layout="@layout/fragment_login" />
+    <action android:id="@+id/action_global_loginFragment" app:destination="@id/loginFragment" />
 </navigation>

@@ -41,6 +41,7 @@ public class ModelFirebase {
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(false)
                 .build();
+        //db.collection(User.COLLECTION_NAME).document("Yuvala").delete();
         db.setFirestoreSettings(settings);
     }
 
